@@ -2,7 +2,7 @@ const express = require('express');
 // var amqp = require('amqplib/callback_api');
 const bodyParser = require("body-parser");
 const app = express();
-const port = 8080;
+const port = 3453;
 const cors = require('cors');
 const EventEmitter = require('events');
 const cron = require('node-cron');
@@ -20,7 +20,7 @@ app.use(cors());
 
 
 function init() {
-    return require('amqplib').connect('amqp://localhost')
+    return require('amqplib').connect('amqp://user:bitnami@127.0.0.1')
         .then(conn => conn.createChannel())
         .then(ch => {
             channel = ch;
@@ -85,7 +85,7 @@ function generateUuid() {
 }
 
 init()
-    .then(() => app.listen(port, () => console.log(`server is listening on ${port}`)))
+    .then(() => app.listen(port,'0.0.0.0', () => console.log(`server is listening on ${port}`)))
     .catch(err=>console.error('something bad happened', err));
 
 module.exports.getDate = getDate;
